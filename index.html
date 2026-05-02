@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fff5f7 0%, #ffdee5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Dancing Script', cursive;
+            overflow: hidden;
+            margin: 0;
+            color: #d63384;
+        }
+
+        /* Contenedor de la imagen original */
+        .image-container {
+            position: relative;
+            z-index: 10;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+        
+        .image-container:hover {
+            transform: scale(1.05);
+        }
+
+        .main-image {
+            max-width: 250px;
+            filter: drop-shadow(0 10px 20px rgba(214, 51, 132, 0.2));
+            border-radius: 20px;
+        }
+
+        /* Estilo del mensaje que aparece al hacer click */
+        #secret-message {
+            display: none;
+            max-width: 400px;
+            text-align: center;
+            padding: 20px;
+            z-index: 20;
+            animation: fadeIn 1s ease-forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .title-text {
+            font-size: 2.8rem;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .body-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: #555;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Reproductor de Audio */
+        .audio-player {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            z-index: 30;
+        }
+
+        /* Pétalos */
+        .petal {
+            position: absolute;
+            background-color: #ffc0cb;
+            border-radius: 150% 0 150% 0;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .btn-reveal {
+            margin-top: 20px;
+            padding: 10px 25px;
+            border: 2px solid #d63384;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            background: white;
+            cursor: pointer;
+            z-index: 25;
+        }
+
+        .btn-reveal:hover {
+            background: #d63384;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="petals-container"></div>
+
+    <!-- Imagen exacta del usuario -->
+    <div class="image-container" id="flower-img">
+        <img src="https://img.pikbest.com/png-images/qianku/cartoon-red-lily-flower-bud-illustration_2085071.png!sw800" alt="Lirio" class="main-image">
+    </div>
+
+    <h1 class="title-text" id="main-title">Para alguien especial</h1>
+
+    <button class="btn-reveal" id="btn-msg" onclick="revealMessage()">Toca para ver algo</button>
+
+    <div id="secret-message">
+        <div class="body-text">
+            Como este lirio, hay bellezas que simplemente iluminan el día de cualquiera. 
+            Quería regalarte algo que no se marchitara, para recordarte lo mucho que disfruto compartir tiempo contigo.
+            <br><br>
+            <span style="color: #e91e63; font-size: 1.5rem;">❤</span>
+        </div>
+    </div>
+
+    <!-- Reproductor de música -->
+    <div class="audio-player">
+        <span style="font-family: 'Montserrat'; font-size: 0.8rem; font-weight: bold;">Reproducelo:</span>
+        <audio id="bg-music" controls style="height: 30px;">
+            <!-- Puedes cambiar este link por el de tu canción favorita en .mp3 -->
+            <source src="https://javier1500x.github.io/cancion/Mon%20Laferte,%20Natalia%20Lafourcade,%20Silvana%20Estrada%20-%20My%20One%20And%20Only%20Love%20(Letra%20%20Espa%C3%B1ol%20%20Lyrics).mp3" type="audio/mpeg">
+            Tu navegador no soporta el audio.
+        </audio>
+    </div>
+
+    <script>
+        function revealMessage() {
+            document.getElementById('secret-message').style.display = 'block';
+            document.getElementById('btn-msg').style.display = 'none';
+            document.getElementById('main-title').innerText = 'Un detalle para ti';
+            
+            // Iniciar música automáticamente si el navegador lo permite
+            document.getElementById('bg-music').play();
+        }
+
+        // Generar pétalos cayendo
+        function createPetal() {
+            const container = document.getElementById('petals-container');
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            
+            const size = Math.random() * 15 + 10;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.top = '-20px';
+            
+            const duration = Math.random() * 3 + 4;
+            petal.style.transition = `transform ${duration}s linear, top ${duration}s linear`;
+            
+            container.appendChild(petal);
+
+            setTimeout(() => {
+                petal.style.top = '110vh';
+                petal.style.transform = `rotate(${Math.random() * 360}deg) translateX(${Math.random() * 100 - 50}px)`;
+            }, 10);
+
+            setTimeout(() => {
+                petal.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createPetal, 400);
+    </script>
+</body>
+</html>
